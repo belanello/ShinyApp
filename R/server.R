@@ -1,8 +1,7 @@
 #C:/Users/belan/R/ShinyApp/R/server.R
 
-
-library(shinyFeedback)
 library(shiny)
+library(shinyFeedback)
 source('func.R')
 
 
@@ -23,7 +22,7 @@ server <- function(input, output, session) {
   
   # Define head
   output$head <- renderTable({
-    head(dataset(),3)
+    head(dataset(),5)
   })
   
   # Define dim
@@ -35,17 +34,20 @@ server <- function(input, output, session) {
     freezeReactiveValue(input,'var')
     freezeReactiveValue(input,'histVar')
     choices <- names(dataset())
-    grpChoices <- getGrp(dataset())
     updateSelectInput(inputId='var', choices=choices)
     updateSelectInput(inputId='histVar',choices=choices)
     updateSelectInput(inputId='X',choices=choices)
     updateSelectInput(inputId='Y',choices=choices)
-    updateSelectInput(inputId='grp',choices=grpChoices)
   })
   
   observeEvent(input$X,{
     choicesY <- getY(dataset(),input$X)
     updateSelectInput(inputId='Y',choices=choicesY)
+  })
+  
+  observeEvent(input$Y,{
+    choicesG <- getG(dataset(),input$X,input$Y)
+    updateSelectInput(inputId='G',choices=choicesG)
   })
   
   # Define summary
@@ -86,31 +88,21 @@ server <- function(input, output, session) {
     feedbackWarning(inputId='Y',!numericY,
                     'Please choose a numeric variable for Y-axis')
     req(numericY,cancelOutput=TRUE)
-    if(input$grp=='NA'){
+    if(input$G=='NA'){
       plotXY(dataset(),input$X,input$Y)
-    }else{
-      feedbackWarning(inputId='grp',!numericX,
-                      'Please choose a numeric variable for X-axis')
-      req(numericX,cancelOutput=TRUE)
-      plotGrp(dataset(),input$X,input$Y,input$grp)
+    }else if((!input$G=='NA')&(!input$categoricalG)){
+      numericG <- isNumericInteger(dataset()[,input$G])
+      feedbackWarning(inputId='G',numericG,
+                      'Please choose a categorical variable.')
+      
+      req(!numericG,cancelOutput=TRUE)
+      plotGrp(dataset(),input$X,input$Y,input$G)
     }
   },res=96)
   
 }
 
 
-  # 
-  # # Create a selectInput:choices
-  # observeEvent(input$dataset, {
-  #   choices <- names(dataset())
-  #   numVars <- getNumeric(dataset())
-  #   grpVars <- getGroup(dataset())
-  #   updateSelectInput(inputId='var', choices=choices)
-  #   updateSelectInput(inputId='plotX', choices=choices)
-  #   updateSelectInput(inputId='plotY',choices=numVars)
-  #   updateSelectInput(inputId='plotGrp',choices=grpVars)
-  # })
-  # 
 
   
 

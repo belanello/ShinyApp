@@ -81,18 +81,20 @@ plotXY <- function(df,X, Y){
     df[, X] <- factor(df[, X])
   }
   df <- na.omit(df)
+  title <- paste(X,'vs.',Y)
   scatterplot(df[,X],df[,Y],id=list(n=3),
-              xlab=X,ylab=Y)
+              main=title,xlab=X,ylab=Y)
 }
 
 # returns only categorical variable names
-getGrp <- function(df){
-  classes <- sapply(df,class)
-  c(NA, names(df)[(classes=='character')|(classes=='factor')])
+getG <- function(df,X,Y){
+  idxX <- which(names(df)==X)
+  idxY <- which(names(df)==Y)
+  c(NA, names(df)[-c(idxX,idxY)])
 }
 
 # returns a scatterplot grouped by a grp variable
-plotGrp <- function(df,X, Y, grp){
+plotG <- function(df,X, Y, grp){
   df <- na.omit(df)
   df <- data.frame(x=df[,X],y=df[,Y],groups=df[,grp])
   scatterplot(y~x|groups,data=df,id=list(n=3),
