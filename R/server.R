@@ -33,16 +33,19 @@ server <- function(input, output, session) {
 
   observeEvent(dataset(), {
     freezeReactiveValue(input,'var')
+    freezeReactiveValue(input,'histVar')
     choices <- names(dataset())
+    grpChoices <- getGrp(dataset())
     updateSelectInput(inputId='var', choices=choices)
     updateSelectInput(inputId='histVar',choices=choices)
     updateSelectInput(inputId='X',choices=choices)
     updateSelectInput(inputId='Y',choices=choices)
-    # numVars <- getNumeric(dataset())
-    # grpVars <- getGroup(dataset())
-    # updateSelectInput(inputId='plotX', choices=choices)
-    # updateSelectInput(inputId='plotY',choices=numVars)
-    # updateSelectInput(inputId='plotGrp',choices=grpVars)
+    updateSelectInput(inputId='grp',choices=grpChoices)
+  })
+  
+  observeEvent(input$X,{
+    choicesY <- getY(dataset(),input$X)
+    updateSelectInput(inputId='Y',choices=choicesY)
   })
   
   # Define summary
@@ -76,7 +79,22 @@ server <- function(input, output, session) {
     plotHist(dataset(),input$histVar,input$bin)
   },res=96)
   
-
+  # Define scatterplot
+  output$scatter <- renderPlot({
+    numericX <- isNumericInteger(dataset()[,input$X])
+    numericY <- isNumericInteger(dataset()[,input$Y])
+    feedbackWarning(inputId='Y',!numericY,
+                    'Please choose a numeric variable for Y-axis')
+    req(numericY,cancelOutput=TRUE)
+    if(input$grp=='NA'){
+      plotXY(dataset(),input$X,input$Y)
+    }else{
+      feedbackWarning(inputId='grp',!numericX,
+                      'Please choose a numeric variable for X-axis')
+      req(numericX,cancelOutput=TRUE)
+      plotGrp(dataset(),input$X,input$Y,input$grp)
+    }
+  },res=96)
   
 }
 

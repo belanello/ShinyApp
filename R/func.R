@@ -61,9 +61,41 @@ isNumericInteger <- function(x){
   (is.integer(x))|(is.numeric(x))
 }
 
+# return histogram
 plotHist <- function(df,target,bin){
   df <- na.omit(df)
   hist(df[,target],freq=FALSE,breaks=bin,main=target,xlab='')
   lines(density(df[,target]),lwd=2)
   rug(df[,target])
 }
+
+# return y-axis variable names without the x-axis variable 
+getY<- function(df,x){
+  idx <- which(names(df)==x)
+  names(df)[-idx]
+}
+
+# return scatter plot
+plotXY <- function(df,X, Y){
+  if(!isNumericInteger(df[,X])){
+    df[, X] <- factor(df[, X])
+  }
+  df <- na.omit(df)
+  scatterplot(df[,X],df[,Y],id=list(n=3),
+              xlab=X,ylab=Y)
+}
+
+# returns only categorical variable names
+getGrp <- function(df){
+  classes <- sapply(df,class)
+  c(NA, names(df)[(classes=='character')|(classes=='factor')])
+}
+
+# returns a scatterplot grouped by a grp variable
+plotGrp <- function(df,X, Y, grp){
+  df <- na.omit(df)
+  df <- data.frame(x=df[,X],y=df[,Y],groups=df[,grp])
+  scatterplot(y~x|groups,data=df,id=list(n=3),
+              xlab=X,ylab=Y)
+}
+

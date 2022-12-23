@@ -64,6 +64,9 @@ shinyUI(fluidPage(
                        choices=NULL),
            selectInput(inputId='Y',
                        label='Choose a Y-axis variable',
+                       choices=NULL),
+           selectInput(inputId='grp',
+                       label='Choose a group variable',
                        choices=NULL)
            
     ),
