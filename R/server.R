@@ -10,7 +10,7 @@ server <- function(input, output, session) {
 # set Default dataset and read csv file according to input$dataset 
   dataset <- reactive({
     if(is.null(input$dataset)){
-      sample <- get('airquality','package:datasets')
+      sample <- get('mtcars','package:datasets')
       sample
     }else{
       ext <- tools::file_ext(input$dataset$datapath)
@@ -95,8 +95,11 @@ server <- function(input, output, session) {
       feedbackWarning(inputId='G',numericG,
                       'Please choose a categorical variable.')
       
-      req(!numericG,cancelOutput=TRUE)
-      plotGrp(dataset(),input$X,input$Y,input$G)
+      req(input$categoricalG,cancelOutput=TRUE)
+      newDf <- newDf2(dataset(),input$X,input$Y,input$G)
+      plotG(newDf,input$X,input$Y,input$G)
+    }else{
+      plotG(dataset(),input$X,input$Y,input$G)
     }
   },res=96)
   

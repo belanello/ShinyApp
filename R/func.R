@@ -94,10 +94,14 @@ getG <- function(df,X,Y){
 }
 
 # returns a scatterplot grouped by a grp variable
-plotG <- function(df,X, Y, grp){
+plotG <- function(df,X, Y, G){
   df <- na.omit(df)
-  df <- data.frame(x=df[,X],y=df[,Y],groups=df[,grp])
+  df <- data.frame(x=df[,X],y=df[,Y],groups=df[,G])
+  title <- paste(X,'vs.',Y,'grouped by ', G)
   scatterplot(y~x|groups,data=df,id=list(n=3),
-              xlab=X,ylab=Y)
+              main=title,xlab=X,ylab=Y,legend=list(coords='bottomright'))
 }
 
+newDf2 <- function(df,X, Y, G){
+  data.frame(x=df[,X],y=df[,Y],groups=factor(df[,G]))
+}

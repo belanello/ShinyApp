@@ -5,17 +5,18 @@ library(bslib)
 
 shinyUI(fluidPage(
   theme=bs_theme(bootswatch='united'),
-  # Application title
-  titlePanel("Quick Data summary"),
-  p('Before we start a Data analysis or apply a machine learning algorithm, 
-  firstly we check the basic information of our data, such as dimension, 
-  classes of variables, missing values, outliers, distribution, 
-  interactions of variables and so on. This simple shiny app makes our first 
-  exploratory analysis quick and easy. Now mtcars dataset is loaded by default, 
-  please explore the functionalities before upload the file and check 
-  the documentation if necessary.' ),
   
-  # Sidebar Panel
+  titlePanel("Quick Data summary"),
+  
+  p('Before we start a Data analysis or apply a machine learning algorithm, 
+    firstly we check the basic information of our data. This simple shiny app 
+    makes our first exploratory analysis quick and easy. Now mtcars dataset is 
+    loaded by default, please explore the functionality before uploading your 
+    file and check the documentation if necessary.'),
+  
+  # ======================================================================
+  # Data upload section
+  # ======================================================================
   tags$hr(),
   fluidRow(
     column(5,
@@ -26,27 +27,45 @@ shinyUI(fluidPage(
                      accept='.csv'),
            checkboxInput("header", "Header", TRUE),
            p('Before upload your file, check'),
-           p(tags$ul(tags$li('File size is less than 5MB.'),
-                     tags$li('Data is in csv file.'),
+           p(tags$ul(tags$li('File size is less than',strong('5MB.')),
+                     tags$li('Data is in',strong('csv file.')),
                      tags$li('If the first row is a header of the table,
-                           thick a check box above.')
-                     )
+                           thick a check box above.'),
+                     style="font-size:13px;")
              )
            
     ),
     column(7,
+           br(),
            tableOutput("head"),
            strong(textOutput('dim'))
     )
   ),
+  # ======================================================================
+  # Variable details section
+  # ======================================================================
   tags$hr(),
   fluidRow(
     column(5,
            h4('Variable Details'),
+           p(tags$ul(tags$li('Choose a variable.'),
+                     tags$li('The summary will be displayed below and correlation
+                             with all the other variables will be included in 
+                             the table (only for numeric variables.)'),
+                     tags$li('NAs column of the table is the number of NA values
+                             of each variable'),
+                     tags$li('If categorical variables coded in numeric, 
+                             thick the checkbox, then the summary will be counts 
+                             of unique values.'),
+                     style="font-size:13px;"),
+             ),
+           
            selectInput(inputId='var',
-                       label='Choose a variable',
+                       label='Choose a variable.',
                        choices=NULL),
+           
            verbatimTextOutput("summary"),
+           
            checkboxInput(inputId='categorical',
                          label='Change this variable to factor?')
     ),
@@ -54,13 +73,24 @@ shinyUI(fluidPage(
            tableOutput('details')
     )
   ),
+  # ======================================================================
+  # Distribution section
+  # ======================================================================
   tags$hr(),
   fluidRow(
     column(5,
            h4('Distributions'),
+           p(tags$ul(tags$li('Choose the numeric variable.'),
+                     tags$li('The histogram in density scale is displayed.'),
+                     tags$li('The line is density estimate.'),
+                     tags$li('The rug-plot(1D scatter plot) is at the bottom of 
+                             the plot'),
+                     tags$li('Change the bin width by the slider if you need.'),
+                     style="font-size:13px;")
+           ),
            useShinyFeedback(),
            selectInput(inputId='histVar',
-                       label='Choose a numeric variable',
+                       label='Choose a variable. (NUMERIC ONLY)',
                        choices=NULL),
            sliderInput(inputId='bin',
                        label='The number of bins',
@@ -72,16 +102,19 @@ shinyUI(fluidPage(
            br()
     )
   ),
+  # ======================================================================
+  # Relationships section
+  # ======================================================================
   tags$hr(),
   fluidRow(
     column(5,
-           h4('Relationships'),
+           h4('Relationships between Variables'),
            useShinyFeedback(),
            selectInput(inputId='X',
                        label='Choose a X-axis variable',
                        choices=NULL),
            selectInput(inputId='Y',
-                       label='Choose a Y-axis variable',
+                       label='Choose a Y-axis variable.(NUMERIC ONLY)',
                        choices=NULL),
            selectInput(inputId='G',
                        label='Choose a categorical variable',
