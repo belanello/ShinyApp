@@ -10,9 +10,9 @@ shinyUI(fluidPage(
   
   p('Before we start a Data analysis or apply a machine learning algorithm, 
     firstly we check the basic information of our data. This simple shiny app 
-    makes our first exploratory analysis quick and easy. Now mtcars dataset is 
-    loaded by default, please explore the functionality before uploading your 
-    file and check the documentation if necessary.'),
+    makes our first exploratory analysis quick and easy. Now "airquality"
+    dataset is loaded by default, please explore the functionality before 
+    uploading your file and check the documentation if necessary.'),
   
   # ======================================================================
   # Data upload section
@@ -109,18 +109,25 @@ shinyUI(fluidPage(
   fluidRow(
     column(5,
            h4('Relationships between Variables'),
+           p(tags$ul(tags$li('Choose X-axis and Y-axis variables.'),
+                     tags$li('The scatter plot and regression line will be 
+                             displyed.'),
+                     tags$li('The row names(indices) of the most three extreme 
+                             points will be displayed.'),
+                     tags$li('Each marginal boxplot will be displayed at each 
+                             axis.'),
+                     tags$li('if the variable of X-axis is a categorical, 
+                             a boxplot will be displayed instead of a scatter
+                             plot.'),
+                     style="font-size:13px;")
+           ),
            useShinyFeedback(),
            selectInput(inputId='X',
                        label='Choose a X-axis variable',
                        choices=NULL),
            selectInput(inputId='Y',
                        label='Choose a Y-axis variable.(NUMERIC ONLY)',
-                       choices=NULL),
-           selectInput(inputId='G',
-                       label='Choose a categorical variable',
-                       choices='NA'),
-           checkboxInput(inputId='categoricalG',
-                         label='Change this variable to factor?')
+                       choices=NULL)
            
     ),
     column(7,

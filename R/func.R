@@ -86,22 +86,3 @@ plotXY <- function(df,X, Y){
               main=title,xlab=X,ylab=Y)
 }
 
-# returns only categorical variable names
-getG <- function(df,X,Y){
-  idxX <- which(names(df)==X)
-  idxY <- which(names(df)==Y)
-  c(NA, names(df)[-c(idxX,idxY)])
-}
-
-# returns a scatterplot grouped by a grp variable
-plotG <- function(df,X, Y, G){
-  df <- na.omit(df)
-  df <- data.frame(x=df[,X],y=df[,Y],groups=df[,G])
-  title <- paste(X,'vs.',Y,'grouped by ', G)
-  scatterplot(y~x|groups,data=df,id=list(n=3),
-              main=title,xlab=X,ylab=Y,legend=list(coords='bottomright'))
-}
-
-newDf2 <- function(df,X, Y, G){
-  data.frame(x=df[,X],y=df[,Y],groups=factor(df[,G]))
-}
