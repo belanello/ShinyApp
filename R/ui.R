@@ -1,4 +1,4 @@
-#C:/Users/belan/R/ShinyApp/R/ui.R
+
 library(shiny)
 library(shinyFeedback)
 library(bslib)
@@ -15,9 +15,12 @@ shinyUI(fluidPage(
     uploading your file and check the documentation if necessary.'),
   
   # ======================================================================
+  # Tab1:
   # Data upload section
   # ======================================================================
-  tags$hr(),
+  tabsetPanel(
+    tabPanel('Quick Data Summary App',
+
   fluidRow(
     column(5,
            h4('Data'),
@@ -141,5 +144,47 @@ shinyUI(fluidPage(
            plotOutput('scatter'),
            br()
     )
-  ),
+  )
+),
+# ======================================================================
+# tab2:documentation
+# ======================================================================
+  tabPanel('Documentation',
+           p(h5('Description'),
+             br(),
+             p('There are 4 sections to explore your data.'),
+             tags$ol(
+               tags$li('Data section',br(),'By loading the data, it display the 
+                   head of the data and its dimension.'),
+               tags$li('Variable Details section',br(),
+                       'By Choosing the variable from drop down list, it display 
+                        the summary of chosen variable along with the table with
+                        all the other variables details including the correlations
+                        (for numeric variable), and the number of missing values.'),
+               tags$li('Distributions section',br(),'By choosing the numeric variable
+                        from drop down list, it displays the histogram (in density 
+                        scale)'),
+               tags$li('Relationships between Variables section',br(),'By choosing 
+                        X-axis variable and Y-axis variables, it displays the scatter 
+                        plot (if X is numeric) or box plot (if X is categorical).'))),
+         
+         
+         
+           p(h5('Restrictions'),
+             br(),
+             p('The file you upload must be,'),
+             tags$ul(
+                tags$li('Less than 5MB'),
+                tags$li('csv (comma-separated values) file.')),
+             p('The data table in the file must be,  '),
+             tags$ul(
+               tags$li('In wide form.(each row represents single observation and
+                       each column represents single variable in the same data class) '))),
+           
+           p(h5('Codes'),
+             a(href='https://github.com/belanello/dataProducts',
+               'https://github.com/belanello/dataProducts'),
+             br(),br(),br())
+         
+         ))
 ))
