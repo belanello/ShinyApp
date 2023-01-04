@@ -6,7 +6,7 @@ library(bslib)
 shinyUI(fluidPage(
   theme=bs_theme(bootswatch='united'),
   
-  titlePanel("Quick Data summary"),
+  titlePanel("Quick Data Summary"),
   
   p('Before we start a Data analysis or apply a machine learning algorithm, 
     firstly we check the basic information of our data. This simple shiny app 
@@ -29,6 +29,7 @@ shinyUI(fluidPage(
            p('Before upload your file, check'),
            p(tags$ul(tags$li('File size is less than',strong('5MB.')),
                      tags$li('Data is in',strong('csv file.')),
+                     tags$li('Data table in the file is in wide form.'),
                      tags$li('If the first row is a header of the table,
                            thick a check box above.'),
                      style="font-size:13px;")
@@ -52,9 +53,9 @@ shinyUI(fluidPage(
                      tags$li('The summary will be displayed below and correlation
                              with all the other variables will be included in 
                              the table (only for numeric variables.)'),
-                     tags$li('NAs column of the table is the number of NA values
+                     tags$li('NAs column of the table is the number of missing values
                              of each variable'),
-                     tags$li('If categorical variables coded in numeric, 
+                     tags$li('If categorical variable is coded in numeric or character, 
                              thick the checkbox, then the summary will be counts 
                              of unique values.'),
                      style="font-size:13px;"),
