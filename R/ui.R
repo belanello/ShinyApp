@@ -125,9 +125,15 @@ shinyUI(fluidPage(
            selectInput(inputId='X',
                        label='Choose a X-axis variable',
                        choices=NULL),
+           
+           checkboxInput(inputId='categorical2',
+                         label='Change X variable to factor?'),
+           
            selectInput(inputId='Y',
                        label='Choose a Y-axis variable.(NUMERIC ONLY)',
-                       choices=NULL)
+                       choices=NULL),
+           br(),
+           br()
            
     ),
     column(7,

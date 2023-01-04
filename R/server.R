@@ -41,13 +41,18 @@ server <- function(input, output, session) {
     updateSelectInput(inputId='Y',choices=choices)
   })
   
+  # updates Y variable options according to X variable that was chosen
   observeEvent(input$X,{
     choicesY <- getY(dataset(),input$X)
     updateSelectInput(inputId='Y',choices=choicesY)
   })
   
+  # whenever new dataset is loaded, check box and slider input are set to 
+  # default value
   observeEvent(dataset(),{
     updateCheckboxInput(inputId='categorical',value=FALSE)
+    updateCheckboxInput(inputId='categorical2',value=FALSE)
+    updateSliderInput(inputId='bin',value=10)
   })
   #===========================================================================  
   # Define summary
@@ -90,9 +95,16 @@ server <- function(input, output, session) {
     numericY <- isNumericInteger(dataset()[,input$Y])
     feedbackWarning(inputId='Y',!numericY,
                     'Please choose a numeric variable for Y-axis')
+    
     req(numericY,cancelOutput=TRUE)
-
-    plotXY(dataset(),input$X,input$Y)
+    
+    if(!input$categorical2){
+        plotXY(dataset(),input$X,input$Y)
+    }else{
+        newDf <- newDf(dataset(),input$X)
+        plotXY(newDf,input$X,input$Y)
+    }
+    
 
   },res=96)
   
