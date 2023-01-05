@@ -1,0 +1,69 @@
+Quick Data Summary Shiny Application
+========================================================
+author: Ayako Nagao
+date: 06 JAN 2023
+transition: linear
+font-family: 'Helvetica'
+
+
+Introduction
+========================================================
+type: sub-section
+This Shiny app makes the first exploratory analysis easy and quick.  
+As a first exploratory analysis we routinely check its dimension, classes, statistics, missing values, correlations and so on. There are packages that enable us to see the summaries at once or display a matrix of graphs, but sometimes it's difficult to find information we need at a glance. By using this app, you can explore your data in one page, graph the data with different variables without executing the same code multiple times.
+
+This is what we do normally...
+========================================================
+
+```{r, echo=FALSE}
+library(datasets)
+library(car)
+data(airquality)
+summary(airquality)
+
+```
+***
+```{r echo=FALSE}
+scatterplotMatrix(airquality)
+```
+
+```{r echo=FALSE}
+str(airquality)
+```
+
+Using Shiny App...
+========================================================
+left: 65%
+
+![](img/data.png)
+![](img/details.png)
+
+***
+
+Whenever you upload the csv file, the first 5 rows of the data and dimension of the data will be displayed.
+
+By choosing a variable, its summary and details of all the other variable will be displayed.
+
+========================================================
+title: false
+left: 65%
+
+![](img/hist.png)
+![](img/xyplot.png)
+URL:
+ <https://belanello.shinyapps.io/QuickDataSummary/>
+<small> please explore the functionalities with a default dataset first per instructions and then upload your csv file!</small>
+
+***
+
+By choosing numeric variable, histogram (in density scale) will be displayed.
+
+
+By choosing x-axis and y-axis variable, scatter plot (if x-axis is factor, then boxplot) will be displayed.
+
+
+
+
+
+
+

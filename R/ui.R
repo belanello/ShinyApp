@@ -182,8 +182,8 @@ shinyUI(fluidPage(
                        each column represents single variable in the same data class) '))),
            
            p(h5('Codes'),
-             a(href='https://github.com/belanello/dataProducts',
-               'https://github.com/belanello/dataProducts'),
+             a(href='https://github.com/belanello/ShinyApp/tree/main/R',
+               'https://github.com/belanello/ShinyApp/tree/main/R'),
              br(),br(),br())
          
          ))
